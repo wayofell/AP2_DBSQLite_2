@@ -119,10 +119,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         myDB = this.openOrCreateDatabase("CarInformation", MODE_PRIVATE, null);
 
         if (view == btnInsert) {
-//            insertValue = new ContentValues();
-//            insertValue.put("CarType", edtCarType.getText().toString());
-//            insertValue.put("CarPower", edtCarPower.getText().toString());
-//            myDB.insert("Carlist", null, insertValue);
             String strSQL = "Insert into Carlist " + "(CarType, CarPower) values('" + edtCarType.getText().toString() + "', '" + edtCarPower.getText().toString() + "');";
             myDB.execSQL(strSQL);
             getDBData(null);
