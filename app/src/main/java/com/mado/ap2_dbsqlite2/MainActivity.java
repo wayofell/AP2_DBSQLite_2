@@ -123,13 +123,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            insertValue.put("CarType", edtCarType.getText().toString());
 //            insertValue.put("CarPower", edtCarPower.getText().toString());
 //            myDB.insert("Carlist", null, insertValue);
-
-            String strSQL = "Insert into Carlist " + "(CarType, CarPower) values('" + edtCarType.getText().toString() +"', '" + edtCarPower.getText().toString() + "');";
-
+            String strSQL = "Insert into Carlist " + "(CarType, CarPower) values('" + edtCarType.getText().toString() + "', '" + edtCarPower.getText().toString() + "');";
             myDB.execSQL(strSQL);
-
             getDBData(null);
+        } else if (view == btnUpdate) {
+            int position = lstView.getCheckedItemPosition();
+
+            if (position != ListView.INVALID_POSITION) {
+                String selectedItem = (String) lstView.getItemAtPosition(position);
+                String[] strData = selectedItem.split("\\s+");
+
+                String originalCarType = strData[0] + " " + strData[1];
+
+                String newCarType = edtCarType.getText().toString();
+                String newCarPower = edtCarPower.getText().toString();
+
+                ContentValues updateValues = new ContentValues();
+                updateValues.put("CarType", newCarType);
+                updateValues.put("CarPower", newCarPower);
+
+                myDB.update("Carlist", updateValues, "CarType=?", new String[]{originalCarType});
+
+                getDBData(null);
+            }
         }
+
         if (myDB != null) myDB.close();
     }
 
