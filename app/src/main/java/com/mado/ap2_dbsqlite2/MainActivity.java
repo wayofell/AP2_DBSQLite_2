@@ -146,6 +146,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 getDBData(null);
             }
+        } else if (view == btnDelete) {
+            int position = lstView.getCheckedItemPosition();
+
+            if (position != ListView.INVALID_POSITION) {
+                String selectedItem = (String) lstView.getItemAtPosition(position);
+                String[] strData = selectedItem.split("\\s+");
+
+                String carTypeToDelete = strData[0] + " " + strData[1];
+                myDB.delete("Carlist", "CarType=?", new String[]{carTypeToDelete});
+
+                getDBData(null);
+            }
+        } else if (view == btnSearch) {
+            String searchCarType = edtCarType.getText().toString();
+            String whereClause = "CarType LIKE '%" + searchCarType + "%'";
+            getDBData(whereClause);
         }
 
         if (myDB != null) myDB.close();
