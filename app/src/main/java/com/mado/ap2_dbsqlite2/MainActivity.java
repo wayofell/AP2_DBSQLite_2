@@ -123,40 +123,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             myDB.execSQL(strSQL);
             getDBData(null);
         } else if (view == btnUpdate) {
-            int position = lstView.getCheckedItemPosition();
-
-            if (position != ListView.INVALID_POSITION) {
-                String selectedItem = (String) lstView.getItemAtPosition(position);
-                String[] strData = selectedItem.split("\\s+");
-
-                String originalCarType = strData[0] + " " + strData[1];
-
-                String newCarType = edtCarType.getText().toString();
-                String newCarPower = edtCarPower.getText().toString();
-
-                ContentValues updateValues = new ContentValues();
-                updateValues.put("CarType", newCarType);
-                updateValues.put("CarPower", newCarPower);
-
-                myDB.update("Carlist", updateValues, "CarType=?", new String[]{originalCarType});
-
-                getDBData(null);
-            }
+            strSQL = "Update Carlist Set ";
+            strSQL += "CarType = '" + edtCarType.getText().toString() + "', ";
+            strSQL += "CarPower = '" + edtCarPower.getText().toString() + "' ";
+            strSQL += "WHERE CarType LIKE '%" + edtCarType.getText().toString() + "%'";
+            myDB.execSQL(strSQL);
+            getDBData(null);
         } else if (view == btnDelete) {
-            int position = lstView.getCheckedItemPosition();
-
-            if (position != ListView.INVALID_POSITION) {
-                String selectedItem = (String) lstView.getItemAtPosition(position);
-                String[] strData = selectedItem.split("\\s+");
-
-                String carTypeToDelete = strData[0] + " " + strData[1];
-                myDB.delete("Carlist", "CarType=?", new String[]{carTypeToDelete});
-
-                getDBData(null);
-            }
+            strSQL = "Delete from Carlist ";
+            strSQL += "WHERE CarType LIKE '%" + edtCarType.getText().toString() + "%'";
+            myDB.execSQL(strSQL);
+            getDBData(null);
         } else if (view == btnSearch) {
-            String searchCarType = edtCarType.getText().toString();
-            String whereClause = "CarType LIKE '%" + searchCarType + "%'";
+            String whereClause = "CarType LIKE '%" + edtCarType.getText().toString() + "%'";
             getDBData(whereClause);
         }
 
